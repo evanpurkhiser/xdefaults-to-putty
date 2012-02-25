@@ -35,7 +35,7 @@ Windows Registry Editor Version 5.00
 new_colors = ""
 
 # Read the passed Xdefaults file
-colors = open(sys.argv[1], 'r').readlines()
+colors = open(sys.argv[2], 'r').readlines()
 
 # Iterate over the colors in the Xdefaults file
 for line in colors:
@@ -53,7 +53,5 @@ for line in colors:
 		color = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
 	)
 
-# Promt the user for the name of the Putty Session to add the colors too
-session_name = raw_input("Enter the putty session you want colors added too:\n")
-
-# Setup the
+# Output the registry script
+print registry_string.format(session = sys.argv[1], values = new_colors)
