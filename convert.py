@@ -23,8 +23,16 @@ color_map = {
 	'color15':    'color21'
 }
 
+# Setup the registry file header
+registry_string = """
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\{session}]
+{values}
+"""
+
 # Store the putty color values in here
-new_colors = {}
+new_colors = ""
 
 # Read the passed Xdefaults file
 colors = open(sys.argv[1], 'r').readlines()
@@ -40,7 +48,12 @@ for line in colors:
 		continue
 
 	# Add the new value to the new_colors dictionary
-	new_colors[color_map[color.group(1)]] = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
+	new_colors += '"{key}"="{color}"\n'.format(
+		key   = color_map[color.group(1)],
+		color = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
+	)
 
+# Promt the user for the name of the Putty Session to add the colors too
+session_name = raw_input("Enter the putty session you want colors added too:\n")
 
-print new_colors
+# Setup the
