@@ -30,9 +30,10 @@ colors = open(sys.argv[1], 'r').readlines()
 for line in colors:
 
 	# Match the color value and name
-	color = re.match(r"\*(color[0-9]+):.*#(.{6})", line)
+	color = re.match(r"\*(.+):.*#(.{6})", line)
 
-	if not color:
+	# Make sure the color code exists in the color map
+	if not color or not color.group(1) in color_map:
 		continue
 
 	print color.group(1, 2)
