@@ -23,6 +23,9 @@ color_map = {
 	'color15':    'color21'
 }
 
+# Store the putty color values in here
+new_colors = {}
+
 # Read the passed Xdefaults file
 colors = open(sys.argv[1], 'r').readlines()
 
@@ -36,4 +39,8 @@ for line in colors:
 	if not color or not color.group(1) in color_map:
 		continue
 
-	print color.group(1, 2)
+	# Add the new value to the new_colors dictionary
+	new_colors[color_map[color.group(1)]] = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
+
+
+print new_colors
