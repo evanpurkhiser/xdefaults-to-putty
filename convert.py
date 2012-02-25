@@ -22,24 +22,24 @@ new_colors = ""
 
 # Color map from xefault color code => Putty color code
 color_map = {
-	'foreground': ('color0', 'color1'),
-	'background': ('color2', 'color3'),
-	'color0':     'color6',
-	'color8':     'color7',
-	'color1':     'color8',
-	'color9':     'color9',
-	'color2':     'color10',
-	'color10':    'color11',
-	'color3':     'color12',
-	'color11':    'color13',
-	'color4':     'color14',
-	'color12':    'color15',
-	'color5':     'color16',
-	'color13':    'color17',
-	'color6':     'color18',
-	'color14':    'color19',
-	'color7':     'color20',
-	'color15':    'color21'
+	'foreground': ('Colour0', 'Colour1'),
+	'background': ('Colour2', 'Colour3'),
+	'color0':     'Colour6',
+	'color8':     'Colour7',
+	'color1':     'Colour8',
+	'color9':     'Colour9',
+	'color2':     'Colour10',
+	'color10':    'Colour11',
+	'color3':     'Colour12',
+	'color11':    'Colour13',
+	'color4':     'Colour14',
+	'color12':    'Colour15',
+	'color5':     'Colour16',
+	'color13':    'Colour17',
+	'color6':     'Colour18',
+	'color14':    'Colour19',
+	'color7':     'Colour20',
+	'color15':    'Colour21'
 }
 
 # Iterate over the colors in the Xdefaults file
@@ -55,7 +55,7 @@ for line in colors:
 	# Add the new value to the new_colors dictionary
 	new_colors += '"{key}"="{color}"\n'.format(
 		key   = color_map[color.group(1)],
-		color = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
+		color = ','.join(tuple(str(int(color.group(2)[i:i+2], 16)) for i in range(0, 6, 2)))
 	)
 
 # Setup the registry file header
