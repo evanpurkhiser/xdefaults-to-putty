@@ -20,26 +20,26 @@ colors = open(sys.argv[1], 'r').readlines()
 # Store the putty color values in here
 new_colors = ""
 
-# Color map from xefault color code => Putty color code
+# Color map from xefault color code => Putty color code (possible multiple)
 color_map = {
-	'foreground': ('Colour0', 'Colour1'),
-	'background': ('Colour2', 'Colour3'),
-	'color0':     'Colour6',
-	'color8':     'Colour7',
-	'color1':     'Colour8',
-	'color9':     'Colour9',
-	'color2':     'Colour10',
-	'color10':    'Colour11',
-	'color3':     'Colour12',
-	'color11':    'Colour13',
-	'color4':     'Colour14',
-	'color12':    'Colour15',
-	'color5':     'Colour16',
-	'color13':    'Colour17',
-	'color6':     'Colour18',
-	'color14':    'Colour19',
-	'color7':     'Colour20',
-	'color15':    'Colour21'
+	'foreground': ['Colour0', 'Colour1'],
+	'background': ['Colour2', 'Colour3'],
+	'color0':     ['Colour6'],
+	'color8':     ['Colour7'],
+	'color1':     ['Colour8'],
+	'color9':     ['Colour9'],
+	'color2':     ['Colour10'],
+	'color10':    ['Colour11'],
+	'color3':     ['Colour12'],
+	'color11':    ['Colour13'],
+	'color4':     ['Colour14'],
+	'color12':    ['Colour15'],
+	'color5':     ['Colour16'],
+	'color13':    ['Colour17'],
+	'color6':     ['Colour18'],
+	'color14':    ['Colour19'],
+	'color7':     ['Colour20'],
+	'color15':    ['Colour21']
 }
 
 # Iterate over the colors in the Xdefaults file
@@ -52,11 +52,15 @@ for line in colors:
 	if not color or not color.group(1) in color_map:
 		continue
 
+	# Get the RGB value of this color
+	rgb = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
+
 	# Add the new value to the new_colors dictionary
-	new_colors += '"{key}"="{color}"\n'.format(
-		key   = color_map[color.group(1)],
-		color = ','.join(tuple(str(int(color.group(2)[i:i+2], 16)) for i in range(0, 6, 2)))
-	)
+	for color_key in color_map[color.group(1)]:
+		new_colors += '"{key}"="{color}"\n'.format(
+			key   = color_key,
+			color = ','.join(map(str, rgb))
+		)
 
 # Setup the registry file header
 registry_string = "[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\{session}]\n{values}"
