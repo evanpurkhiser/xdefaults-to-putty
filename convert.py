@@ -1,5 +1,24 @@
 #!/usr/bin/python
-import sys, re
+import sys, re, os
+
+# Do some error checking
+if len(sys.argv) < 2:
+	print "Please enter the xdefaults file path"
+	raise SystemExit
+
+if len(sys.argv) < 3:
+	print "Please enter atleast one Putty session name"
+	raise SystemExit
+
+if not os.path.exists(sys.argv[1]):
+	print "The given xdefaults color file does not exist"
+	raise SystemExit
+
+# Read the passed Xdefaults file
+colors = open(sys.argv[1], 'r').readlines()
+
+# Store the putty color values in here
+new_colors = ""
 
 # Color map from xefault color code => Putty color code
 color_map = {
@@ -23,15 +42,6 @@ color_map = {
 	'color15':    'color21'
 }
 
-# Setup the registry file header
-registry_string = "[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\{session}]\n{values}"
-
-# Store the putty color values in here
-new_colors = ""
-
-# Read the passed Xdefaults file
-colors = open(sys.argv[1], 'r').readlines()
-
 # Iterate over the colors in the Xdefaults file
 for line in colors:
 
@@ -47,6 +57,9 @@ for line in colors:
 		key   = color_map[color.group(1)],
 		color = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
 	)
+
+# Setup the registry file header
+registry_string = "[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\{session}]\n{values}"
 
 # Output the registry header that windows needs
 print "Windows Registry Editor Version 5.00\n"
