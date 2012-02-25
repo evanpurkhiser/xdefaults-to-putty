@@ -24,18 +24,13 @@ color_map = {
 }
 
 # Setup the registry file header
-registry_string = """
-Windows Registry Editor Version 5.00
-
-[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\{session}]
-{values}
-"""
+registry_string = "[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\{session}]\n{values}"
 
 # Store the putty color values in here
 new_colors = ""
 
 # Read the passed Xdefaults file
-colors = open(sys.argv[2], 'r').readlines()
+colors = open(sys.argv[1], 'r').readlines()
 
 # Iterate over the colors in the Xdefaults file
 for line in colors:
@@ -53,5 +48,9 @@ for line in colors:
 		color = tuple(int(color.group(2)[i:i+2], 16) for i in range(0, 6, 2))
 	)
 
+# Output the registry header that windows needs
+print "Windows Registry Editor Version 5.00\n"
+
 # Output the registry script
-print registry_string.format(session = sys.argv[1], values = new_colors)
+for session in sys.argv[2:]:
+	print registry_string.format(session = session, values = new_colors)
