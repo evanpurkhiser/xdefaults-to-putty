@@ -6,6 +6,6 @@ Using this tool you can convert a standard Xdefaults (Xresources) file that incl
 
 ### Usage
 
-To use this converter simply run it as `./convert .Xdefaults PuttySessionName1 PuttySessionName2 ...` > colors.reg
+To use this converter simply run it as `./convert .Xdefaults PuttySessionName1 PuttySessionName2 ... > colors.reg`
 
 You can specify multiple putty sessions. A putty session is the name of a stored session in the putty client configuration.
